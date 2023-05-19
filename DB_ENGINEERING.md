@@ -877,19 +877,43 @@ Select * from employee where emp_name='john' ; // Only primary key or secondary 
 + Maintainability: the system able to add on feature without massive change.
 
 
+## 5. How to indexing the right way 
+
+## 6. Database isolation level
+
+- Database concurrency issue:
+  - Dirty reads
+  - Non-repeatable read
+  - Phantom reads
+  - Lost updates
+  
+
+- Isolation level:
+  - SERIALIZE: Put a read-write and range locks in selected data, prevent problems:
+    - Dirty read
+    - Non-repeatable read
+    - Phantom read
+  - REPEATABLE READ: In this isolation level, a lock-based concurrency control DBMS implementation keeps read and write locks (acquired on selected data) until the end of the transaction. However, range-locks are not managed, so phantom reads can occur, prevent problems:
+    - Dirty read
+    - Non-repeatable read
+  - READ COMMITED: read commited put a write locks, but read lock is reease as soon as a SELECT command call, range-lock are not managed in this level, prevent problems:
+    - Dirty reads
+  - READ UNCOMMITED
 
 
+- Example:
 
+- Dirty Reads:
+  - Transaction 1 starts and reads a row from a table.
+  - Transaction 2 modifies the same row but has not yet committed the changes.
+  - Transaction 1 reads the same row again and obtains the uncommitted changes made by Transaction 2. This is a dirty read.
 
+- Non-repeatable Reads:
+  - Transaction 1 starts and reads a row from a table.
+  - Transaction 2 modifies the same row and commits the changes.
+  - Transaction 1 reads the same row again, but this time it retrieves different data due to the committed changes made by Transaction 2. This is a non-repeatable read.
 
-
-
-
-
-
-
-
-
-
-
-
+- Phantom Reads:
+  - Transaction 1 starts and performs a query that retrieves a set of rows based on certain criteria.
+  - Transaction 2 inserts a new row that satisfies the criteria used by Transaction 1.
+  - Transaction 1 re-executes the query, but this time it retrieves an additional row that was inserted by Transaction 2. This is a phantom read.

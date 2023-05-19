@@ -26,8 +26,10 @@ List<Number> list2 = new ArrayList<>();
 
 ```java
 Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
-List<Integer> list1 = stream.filter(i -> i > 3).collect(Collectors.toList());
-List<Integer> list2 = stream.filter(i -> i < 3).collect(Collectors.toList());
+List<Integer> list1 = stream.filter(i -> i > 3)
+  .collect(Collectors.toList());
+List<Integer> list2 = stream.filter(i -> i < 3)
+  .collect(Collectors.toList());
 ```
 
 - A: Stream has already been linked or consumed
@@ -50,8 +52,28 @@ System.out.println(list2); // [1, 2, 3]
 
 ```
 
-### 1.3 Atomic vs block
+### 1.3 Atomic vs block vs volatile
 
-### 1.4 DB Isolation level
+- Block: 
+  - Provides mutual exclusion
+  - Provides visibility guaranteed - updated values of variables modified inside synchronized context will be visible to all thread
+- Volatile:
+  - Volatile keyword ensure about the visibility of variables across threads. But not ensure race condition.
+- Atomic variables:
+  - Using CAS operation
 
-### 1.5 How to indexing
+```c
+function cas(p: pointer to int, old: int, new: int) is
+    if *p ≠ old
+        return false
+    *p ← new
+    return true
+
+function add(p: pointer to int, a: int) returns int
+    done ← false
+    while not done
+        value ← *p  
+        // Even this operation doesn't need to be atomic.
+        done ← cas(p, value, value + a)
+    return value + a
+```
