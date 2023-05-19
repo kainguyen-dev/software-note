@@ -911,9 +911,10 @@ Select * from employee where emp_name='john' ; // Only primary key or secondary 
 - Non-repeatable Reads:
   - Transaction 1 starts and reads a row from a table.
   - Transaction 2 modifies the same row and commits the changes.
-  - Transaction 1 reads the same row again, but this time it retrieves different data due to the committed changes made by Transaction 2. This is a non-repeatable read.
+  - Transaction 1 reads the same row again, but this time it retrieves different data due to the committed changes made by Transaction 2. This is a non-repeatable read
 
 - Phantom Reads:
   - Transaction 1 starts and performs a query that retrieves a set of rows based on certain criteria.
   - Transaction 2 inserts a new row that satisfies the criteria used by Transaction 1.
   - Transaction 1 re-executes the query, but this time it retrieves an additional row that was inserted by Transaction 2. This is a phantom read.
+~
