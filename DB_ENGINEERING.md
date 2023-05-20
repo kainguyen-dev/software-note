@@ -879,6 +879,44 @@ Select * from employee where emp_name='john' ; // Only primary key or secondary 
 
 ## 5. How to indexing the right way 
 
+- Cluster index vs incluster index:
+
+-   Clustered Index:
+    - A clustered index determines the physical order of data rows in a table based on the indexed column(s).
+    - Each table can have only one clustered index because the data rows themselves are sorted according to the index key.
+    - When a clustered index is created, the data in the table is physically reordered to match the order of the clustered index.
+    - Because of the physical ordering, retrieving data based on the clustered index is usually faster, especially when accessing consecutive or range-based values.
+    - Clustered indexes are particularly useful for tables that are frequently queried based on a specific column or range of values.
+
+- Unclustered Index (Non-clustered Index):
+    - An unclustered index is a separate structure from the table that stores a copy of the indexed column(s) along with a pointer to the corresponding row(s) in the table.
+    - Multiple unclustered indexes can be created on a single table, providing flexibility in optimizing different query patterns.
+    - Unclustered indexes do not affect the physical order of data in the table. The data remains stored in the order determined by the clustered index or the order of insertion if there is no clustered index.
+    - Unclustered indexes are efficient for finding specific values or ranges within a table based on the indexed column(s). They allow for quick data access but may require additional operations to fetch the actual data.
+    - Updating or inserting new records in a table with unclustered indexes is generally faster compared to updating a table with a clustered index because there is no need to reorder the data.
+
+- In summary, a clustered index determines the physical order of data rows in a table and is useful for optimizing queries that frequently access a specific column or range of values. On the other hand, unclustered indexes are separate structures that provide quick access to specific values or ranges within a table without changing the physical order of the data. Both types of indexes have their own benefits and trade-offs, and their usage depends on the specific requirements and query patterns of the database.
+
+
+- How to order indexing:
+  - Equal reference before range reference, example
+```sql
+select ID, name from city where code = 'GE' and population > 1000
+-> alter table city add index (code, population)
+```
+  - When two column is equal reference than consider:
+    - Which column used more frequently 
+    - How eill column can filter data: select the most distinct value first.
+    - Example:
+
+```sql
+alter table XYZ add index (col_1, col_2, col_3)
+-- Then only col_1 is indexing directly
+```
+
+- Redundant indexing:
+  - Index on (col_1, col_2) is the same index on (col_1)
+
 ## 6. Database isolation level
 
 - Database concurrency issue:
