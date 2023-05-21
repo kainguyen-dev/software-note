@@ -250,3 +250,108 @@ kw_func(10, 20, v=100, d=30)
   - after positional arguments have been exhausted
   - **kwargs: must be at the end of function
 
+## 6. First class function
+- Can be pass as a object in Python.
+- Docstring of function is the first comment string in function, store in __doc__ attribute of function
+- Function annotation, store in the __annotations__ of function.
+
+```python
+def my_func(a: <expression>, b: <expression>) <expression>:
+  pass
+
+def my_func(a: 'a string', b: 'a positive integer') -> 'a string':
+  return a + b
+
+def my_func(a str,  b 'int > 0') -> str:
+  return a*b
+
+```
+
+- Anonymous function using lambda:
+```python 
+def func(x, fm):
+  return fn(x)
+func(3, lambda x: x**2)
+```
+- Limit of lambda:
+  - Limit to single expression
+  - No assignment, no annotations
+
+- Lambda and sorted:
+
+```python
+l = ['B', 'D', 'a', 'c']
+print(sorted(l, key=lambda x: x.upper())) # ['a', 'B', 'c', 'D']
+
+
+m =  { 'a': 30, 'b': 12, 'c': 24 }
+print(sorted(m, key=lambda x: m[x])) # ['b', 'c', 'a']
+
+```
+
+- Randomize a list using sorted
+
+```python 
+
+# Randomize an iterable using sorted
+import random
+
+N = 10
+a = [n for n in range (10)]
+ran_a = sorted(a, key=lambda x : (random.random() * 10 % N) )
+print (ran_a) # [6, 1, 8, 3, 5, 4, 0, 2, 7, 9]
+```
+- Using **dir** to introspect function
+
+- **Callable**: are object that can be call using ()
+  - Using **callable** method to check if object is callable
+  - Callable type in python:
+    - method, function
+    - lambda
+    - class with constructor
+    - class instance that implement __call__
+
+```python 
+print(callable(print))
+
+class MyClass:
+    def __call__(self):
+        pass
+
+
+print(callable(MyClass)) # true
+
+a = MyClass()
+
+print(callable(a)) # true
+```
+
+- zip in python
+```python 
+a = ("John", "Charles", "Mike")
+b = ("Jenny", "Christy", "Monica")
+x = zip(a, b)
+```
+
+- list comprehendsion
+```python
+newlist = [expression for item in iterable if condition == True]
+```
+
+- reduce function in python:
+```python
+functools.reduce(function, iterable[, initializer])
+
+numbers = [0, 1, 2, 3, 4]
+r = reduce(lambda x , y : x + y , numbers, 0)
+print(r) # 10
+
+```
+
+- partial fucntion python:
+```python
+def pow(base, exponent):
+  return base ** exponent
+
+square = partial(pow, exponent=2)
+```
