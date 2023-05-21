@@ -355,3 +355,101 @@ def pow(base, exponent):
 
 square = partial(pow, exponent=2)
 ```
+
+## 7. Global and local scoping
+- There is no concept of truly global scope in Python.
+- The only exceptions are built-in global variable.
+- Scope are essentially module scope, it spans a single file.
+- Using __global__ in function to get global scope in Python
+
+
+- Closure in python: closure in python meaning that the inner function have the ability to access outer function data even, the outer function is returned.
+```python
+def outer_function(outer_variable):
+    def inner_function():
+        print(outer_variable)  # Accessing outer_variable from the outer function
+
+    return inner_function
+
+closure = outer_function("I am outside!")
+closure()  # Output: "I am outside!"
+```
+- Python create an intermediary object for this.
+
+- Closure applications:
+  - Use as a memo;
+```python 
+def averager():
+    numbers = []
+    def add(number):
+        numbers.append(number)
+        total = sum(numbers)
+        count = len(numbers)
+        return total / count
+    return add
+
+a = averager()
+a(10) # 10
+a(20) # 15
+a(30) # 20
+```
+  - Using as counter:
+```python
+def counter(init_val):
+  def inc(increment=1):
+    init_val = init_val + increment
+    return init_val
+  return inc
+```
+
+- Decorator function:
+  - Take input of a function and return closure 
+  - Python convenient way of declare decorator:
+  
+```python 
+@counter
+def add(a, b):
+  return a+b
+```
+
+- Example of decorators:
+
+```python 
+# 1. Cache
+
+def fib():
+    cache = {1: 1, 2: 2}
+    
+    def calc_fib(n):
+        if n not in cache:
+            print('Calculating fib({0})'.format(n))
+            cache[n] = calc_fib(n-1) + calc_fib(n-2)
+        return cache[n]
+    
+    return calc_fib
+
+# 2. Logged 
+def logged(fn):
+    from functools import wraps
+    from datetime import datetime, timezone
+    
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        run_dt = datetime.now(timezone.utc)
+        result = fn(*args, **kwargs)
+        print('{0}: called {1}'.format(fn.__name__, run_dt))
+        return result
+        
+    return inner
+    
+@logged
+def func():
+    print('Do some stupid shits')
+    
+func()
+# Do some stupid shits
+# func: called 2023-05-21 14:21:53.143483+00:00
+
+```
+
+- Parameterize decorators
