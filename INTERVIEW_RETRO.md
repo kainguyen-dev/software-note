@@ -77,3 +77,35 @@ function add(p: pointer to int, a: int) returns int
         done ← cas(p, value, value + a)
     return value + a
 ```
+
+## 2. V net
+
+- **Prometheus**: 
+  - Pull metrics from exporter
+  - Find target from servcice discovery
+  - Push alert to alert manager
+  - Configure Prometheus to find metrics:
+    
+```yaml
+scrape_configs:
+  - job_name: 'spring-boot-app'
+    static_configs:
+      - targets: ['localhost:8080']
+```
+  - Prometheus store in its own custom data layer, but store index in LevelDB
+  - Fine tune Prometheus:
+    - Reduce scrape interval 
+    - Configure appropriate retention policies
+    - Utilize federation and remote write
+    - Optimize memory usage: storage.local.target-heap-size
+    - Chunk encoding is used default in Prometheus, Prometheus use delta-delta encoding.
+    - Crash recovery: storage.local.checkpoint-interval
+    - Using prometheus federation (pull metrics from other path)
+
+
+- **Kafka**:
+  - Partitions: represent the unit of parallelism in Kafka
+
+- Design, Configuration, Tuning of Apache Kafka Event Streaming Platform for high volume, and secure target architecture
+
+- Spark, Hadoop

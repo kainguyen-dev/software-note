@@ -1160,3 +1160,8 @@ Opaque Tokens:
   - DB attack
   - XSS cross site scripting attack
   - Gains physical access
+
+
+
+**HOW Ksql WORKS?**
+
