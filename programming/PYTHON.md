@@ -452,4 +452,43 @@ func()
 
 ```
 
-- Parameterize decorators
+- Decorator parameters
+```python 
+def context_func(context, log, time):
+    def outer(fn):
+        def inner(*args, **kwargs):
+            print("Working context: ", context)
+            if log:
+                print(f"Execute if { fn.__name__ }")
+            for i in range(time):
+                result = fn(*args, **kwargs)
+            return result
+        return inner
+    return outer
+
+
+@context_func("dev", True, 10)
+def call_name(name):
+    print(f'My name is {name}')
+
+call_name("Stan")
+```
+
+- Class decorator
+```python
+class Logger:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print(f"Calling function: {self.func.__name__}")
+        result = self.func(*args, **kwargs)
+        print(f"Function {self.func.__name__} finished")
+        return result
+```
+
+- Tuple vs List vs String
+  - Tuple is immutable
+  - Fix length
+  - Fix order
+
