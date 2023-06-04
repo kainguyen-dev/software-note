@@ -492,3 +492,33 @@ class Logger:
   - Fix length
   - Fix order
 
+- Modules:
+  - module is just a object in python
+  - basically a dict
+  - has a namespace
+  - load from file
+
+- Modules vs package in python
+  - Module is a single file 
+  - Pacakge is a collection of module or sub package 
+
+```python 
+
+# Example of a module (module_example.py):
+
+def greet(name):
+    print(f"Hello, {name}!")
+
+def calculate_sum(a, b):
+    return a + b
+
+
+package_example/
+    __init__.py
+    module1.py
+    module2.py
+
+```
+
+- Process of importing in python:
+  - 
