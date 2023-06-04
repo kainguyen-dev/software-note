@@ -347,6 +347,43 @@ spec:
 ![](img/mongo-2.svg)
 
 
+**FINE TUNNING KAFKA**
+
+- Element of tunning kafka:
+  - Ack
+  - Replicas
+  - Partition
+  - Batch size
+
+- There are four aspect for tuning kafka depend on your application:
+  - Latency <-> through put
+  - Availability <-> Durability
+
+- Durability vs Availability configuration:
+
+| Configuration        | Desc                                |
+|----------------------|-------------------------------------|
+|  min.insync.replicas |  minimum number of in-sync replicas (ISRs) that must be available for a producer to consider a write operation as successful |
+|  acks                |  value (0, 1, 'all') if acks = '1', 'all', producer require 'min.insync.replicas' of replicas acks to consider success operation | 
+|  replication.factor  |  The replication factor determines the number of replicas for each partition |
+|  enable.auto.commit  |  let consumer control offset of kafka partition or peridically update it |
+
+- Latency vs Throughtput configuration:
+
+| Configuration        | Desc                                |
+|----------------------|-------------------------------------|
+|  max.poll.record     |  maximum number of records per fetch from consumer |
+|  batch.size          |  maximum number of records that being batch in memory before push to broker |
+|  linger.ms           |  maximum time a records stay in consume before get push to broker |
+
+- Number of partion should be high or low:
+  - Pros:
+    - Higher degree of parallelism -> higher throughput
+  - Cons: 
+    - More file in disk for each partition
+    - More time to elect new leader for each partitions
+    - More latency due to increase in sync time
+
 
 
 
