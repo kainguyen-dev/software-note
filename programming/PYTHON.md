@@ -520,5 +520,26 @@ package_example/
 
 ```
 
-- Process of importing in python:
-  - 
+- Multiple inheritance in python
+  - Python support, multiple inheritance, in case of conflict of inheritance, method resolution order will dictate with method is win.
+
+- Dataclasses
+
+```python
+
+>>> from dataclasses import dataclass
+>>> @dataclass
+... class TeenyDataClass:
+... name: str
+...
+>>> teeny = TeenyDataClass('bitsy')
+>>> teeny.name
+
+```
+
+
+- Module in python is just a python file.
+- Package is just the folder of python file.
+
+
+#### Python concurrency

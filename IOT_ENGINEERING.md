@@ -58,3 +58,96 @@
     - "$" for system topic
     - "+" for get all in single level
     - "#" for get all in lower level
+
+
+## 2. IoT Architecting
+
+### 2.1 Architect of iot system
+  - Edge device layer
+  - Near-edge PAN-LAN layer
+  - Cloud layer
+
+![](img/iot-2.png) 
+
+- Cloud services, edge services:
+  - Cloud services
+    - Data ingestion and management for multiple edge patients and
+systems
+    - Almost unlimited storage capacity
+    - A controlled software deployment and updates to edge
+  - Edge services:
+    - PAN connect to sensor
+    - Upfront cost
+
+- Azure IoT architect:
+![](img/iot-3.png) 
+
+- IoT versus machine-to-machine versus SCADA:
+  - M2M: data transfer between device, maybe non-IP based.
+  - IoT: data aggregate at edge router or gateway, using IP-based protocols
+  - SCALA: machine connect to a PLCs via ModBus, Profibus protocols.
+
+- Number of node vs cost and value:
+![](img/iot-4.png)
+
+
+### 2.2 Sensors, Endpoints, and Power Systems
+- Non-ip based WPAN:
+  - Bluetooth
+  - Zigbee
+  - Z-wave
+
+- IP-based WPAN:
+  - TCP/IP: 
+    - TCP vs UDP:
+      - They are both IP based network protocols
+      - UDP is simpler but not resilient
+      - TCP provides flow control using sliding window and congestion avoidance algorithms. 
+      - UDP provides a lightweight, high-speed method to broadcast data to various devices that may or may not be present or reliable.
+
+### 2.3 Edge computing
+
+![](img/iot-5.png)
+
+- Edge agent comprise of:
+  - OS
+  - Container runtime
+  - Ram and disk
+  - Network protocol for sending upstream data to MQTT
+
+### 2.4 Edge routing and network
+
+- Routing table:
+
+```sh
+Routing tables
+
+Internet:
+
+Destination        Gateway            Flags           Netif Expire
+default            192.168.70.1       UGScg             en0
+127                127.0.0.1          UCS               lo0
+127.0.0.1          127.0.0.1          UH                lo0
+169.254            link#11            UCS               en0      !
+192.168.70         link#11            UCS               en0      !
+192.168.70.1/32    link#11            UCS               en0      !
+192.168.70.1       14:49:bc:36:f1:c0  UHLWIir           en0   1154
+192.168.70.29      22:a4:bd:b6:cd:a7  UHLWI             en0    353
+192.168.70.41      5e:2c:27:46:61:6d  UHLWI             en0   1133
+192.168.70.42      ae:4a:5e:65:34:98  UHLWI             en0      !
+```
+ 
+ ### 2.5 Edge to cloud protocols
+- MQTT:
+  - IP-based transport protocol are to:
+    - Be simple to implement
+    - Provide a form of quality of service
+    - Be very lightweight and bandwidth efficient
+    - Be data agnostic
+    - Have continuous session awareness
+    - Address security issues
+
+
+- Message queues by nature store messages while MQTT does not. In MQTT, if no one is subscribing (or listening) to a topic, it is simply ignored and lost. Message queues also maintain a client-server topology where one consumer is paired with one producer.
+
+- MQTT subscription group: similar to consumer group in Kafka, message is round robin between consumer.

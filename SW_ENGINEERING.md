@@ -377,66 +377,6 @@ Select * from employee where emp_name='john' ; // Only primary key or secondary 
 - Portal:
     - Spring security
 
-**POSTGRE**
-
-- Objects of POSTGRE:
-    - Database
-    - Schema
-    - Table
-    - Views: data in views is not updatable, if view is retrieve from one table, it can be update, if view is aggregated from multiple table, it need a trigger to update views. Materialized view cache the underlying data.
-    - Extension: equivalent of package in Oracle.
-    - Function
-    - Foreign table, PostGre create virtual table for data outside source such as CSV, noSQL database, ...
-    - Trigger
-    - Type
-    - Full text search
-    - Sequence
-- Manage disk storage with tablespaces:
-    - Tablespace: is a storage location where the actual data underlying database objects can be kept.
-- Using explain icon for anaysis result:
-    - Checking: cost, parallel aware.
-- PostgreSQL:
-    - Views:
-        - From 9.3, when view draws from one DB than it can be updated directly.
-        - From 9.3, materialized view only update value when you issue REFRESH command.
-        - Use trigger to update views
-        - Materialized view cache the underlying data.
-    - ILIKE for case sensitive
-    - UPSERTs: INSERT on CONFLICT UPDATE
-- Performance tunning:
-    - Using EXPLAIN (ANALYSE, VERBOSE, BUFFER) cache the analysis.
-        '''
-        EXPLAIN (ANALYZE)
-        SELECT tract_id, hispanic_or_latino
-        FROM census.hisp_pop
-        WHERE tract_id = 25025010103;
-        '''
-    - PostgreSQL caches plans and data after each execution.
-    - Writing better queries:
-        1. Avoid writing subqueries in SELECT, rewriting using join
-        2. Avoid SELECT *, because some PostgreSQL stores large blob and text objects using TOAST (The Oversized-Attribute Storage Technique) aggregate them took a lot of time.
-        3. Use CASE for sub-queries.
-    - Parallelize query: Parallel query is enabled by default in PostgreSQL 10 and is controlled through the configuration value for max_parallel_workers_per_gather. Run EXPLAIN will show Gather keyword.
-
-- Replication and External Data:
-    - In PostGrel there are several way to sharing data to other external source:
-        - Built-in replication
-        - Third party tool
-        - Foreign data wrapper (FWD) for sending to multiple source
-    - Replication can help to achieve availability and scalability:
-        - Availability: when server when down, replica can back up immediately
-        - Scalability: Read replica can handle read request, write replica can handle write repuest.
-    - Components for replication:
-        - Master
-        - Slave
-        - WAL
-        - Sync replication
-        - Async replication
-        - Streaming replication
-        - Cascading replication
-    - There are two way for replication:
-        - Streaming and File-based replication
-
 
 **WEB SOCKET**
 
@@ -521,8 +461,6 @@ Number of threads = Number of Available Cores
 - 2. Observe the system running with X concurrent threads and gather diagnostics such as throughput, response times, processor usage, monitor contention, and any other relevant resource usage.
 - 3. If one of the resources exceeds (or is significantly below) a comfortable utilization level (for example, average CPU more than 90% utilized, or it is only 5%), then perform a binary search on X.
 
-
-
 **DESIGN PATTERN RULE OF THUMBS**
 
 - Structural design patterns:
@@ -558,8 +496,6 @@ Number of threads = Number of Available Cores
 - What have been done under the hood ?
 
 ![](img/sw_3.png)
-
-
 
 
 
@@ -653,7 +589,7 @@ Object remove(Object key, Object value) {
 	- Thread safe
 
 - **EnumMap**:
-	- Enum Map use enum as key 
+	- Enum Map use enum as key
 
 
 - **IdentityHashMap**:
@@ -689,11 +625,7 @@ Object remove(Object key, Object value) {
 - **LinkedBlockingDeque**:
 	- Similar to ArrayDeque but with limit 	 
 
-	
-	
-	
-	
-	
+
 **DIFFERENCE BETWEEN STATEMENT VS PREPAREDSTATEMENT VS CALLABLESTATEMENT**
 
 - 1) Statement  –  Used to execute normal SQL queries, usually used for DDL
@@ -736,63 +668,6 @@ pstmt.executeUpdate();
 
 
 
-
-**SECURITY PREVENTION**
-
-- ***_CSRF_***: cross site request forgery, happen at client side.	- **Attack vector**: Attacker send the same payload to server (with cookie, cookie is automatically send along request) and without any checking mechanism, server execute that request.
-	- **Prevention**: use randomize id when user send request, server checking that id first (randomize id is not automatically send as cookie).
-	- **Note**: not confuse with same-origin-policy in browser, browser have same-origin-policy that request with same port, domain and schema can send request but response is not display.
-
-
-![](img/sw_9.png)
-
-
-- ***_Data integrity_***
-- ***_Data masking_***
-- ***_SQL Injection_***
-- ***_Update regularly_***
-
-
-
-**SSO MECHANISM**
-
-![](img/sw_10.png)
-
-- SSO can be implement by:
-  - Oauth
-  - OpenID
-  - SAML (old)
-
-**OAUTH**
-
-Request flow:
-
-![](img/sw_11.png)
-
-How access token is validate:
-    - Perform standard JWT validation
-    - Checking audience claims
-    - Checking scope
-
-Authorization code flow:
-  -  Click login
-  -  Client redirect to login page
-  -  User consent
-  -  Authorization Server return Authorization Code
-  -  Client send:
-     -  Auth Code
-     -  Client ID
-     -  Client secret to Authorization Server to get Access Token
-
-PCKE enhancement:
-    - Problems: some client app can not save Client Id, client secret so that PCKE provide a better way to handle it.
-    - Request authorize and get access token will have code_challenge parametet into it.
-
-Opaque Tokens:
-    - Basically we want to hide data from JWT, it will require additional encrypt/decrypt
-
-
-
 **DEEP LINK**
 
 - Scheme of deep link:
@@ -802,15 +677,4 @@ Opaque Tokens:
 - Deep links have two kinds:
     - For web: web links: for android 12 >, web links default open in browser
     - For app: app links 
-
-**COOKIES AND SECURITY**
-- Ways to steal a cookies:
-  - Packet sniffer
-  - DB attack
-  - XSS cross site scripting attack
-  - Gains physical access
-
-
-
-**HOW Ksql WORKS?**
 
