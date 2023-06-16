@@ -62,6 +62,12 @@ System.out.println(list2); // [1, 2, 3]
 - Atomic variables:
   - Using CAS operation
 
+Limit of Atomic operation:
+  - Limited functionality: Atomic operations are typically limited to basic operations such as compare-and-swap, fetch-and-add, etc. Complex operations that require multiple steps or synchronization between threads may not be possible using atomic operations alone.
+
+Limit of blocking: 
+  - Locking contention
+
 ```c
 function cas(p: pointer to int, old: int, new: int) is
     if *p ≠ old
@@ -111,6 +117,12 @@ scrape_configs:
 - Spark, Hadoop
 
 ## 2. Prepare Noveo
+
+- Using star format:
+  - Situation
+  - Task
+  - Action
+  - Result
 
 - **Intro:**
 What did you not like about the project (usually about which you told)
@@ -228,3 +240,10 @@ CREATE BITMAP INDEX <indexname> ON <table> (x, y);
   - Dont use DTO projection
   - Use cascade REMOVE
   - Use Set instead of List
+
+# 3. How concurreny hash map work ?
+
+- Most important config of ConcurrentHashMap:
+  - Concurrency-Level: Defines the number which is an estimated number of concurrently updating threads. The implementation performs internal sizing to try to accommodate this many threads.
+  - It divide hash map into segment, each lock will manage each segment
+  - Write and delete will lock segment, read will not lock.
