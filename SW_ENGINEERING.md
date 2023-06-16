@@ -678,3 +678,9 @@ pstmt.executeUpdate();
     - For web: web links: for android 12 >, web links default open in browser
     - For app: app links 
 
+
+**MULTI-TENANCY**
+- There are three way to design DB in multi-tenant:
+  - Cheapest one: all tenant in one DB, separate them by tenant_id
+  - Medium cost: multiple schema for multiple tenant
+  - Highest cost: one database for one tenant, some database can be shared by all client.

@@ -955,4 +955,10 @@ alter table XYZ add index (col_1, col_2, col_3)
   - Transaction 1 starts and performs a query that retrieves a set of rows based on certain criteria.
   - Transaction 2 inserts a new row that satisfies the criteria used by Transaction 1.
   - Transaction 1 re-executes the query, but this time it retrieves an additional row that was inserted by Transaction 2. This is a phantom read.
-~
+
+## 7. When DB don't pick up my index:
+
+- When table is small 
+- Data mismacth
+- LIMIT clause
+- Large portion of data is returned
