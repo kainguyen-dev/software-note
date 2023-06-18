@@ -241,9 +241,18 @@ CREATE BITMAP INDEX <indexname> ON <table> (x, y);
   - Use cascade REMOVE
   - Use Set instead of List
 
-# 3. How concurreny hash map work ?
+- How concurreny hash map work ?
 
 - Most important config of ConcurrentHashMap:
   - Concurrency-Level: Defines the number which is an estimated number of concurrently updating threads. The implementation performs internal sizing to try to accommodate this many threads.
   - It divide hash map into segment, each lock will manage each segment
   - Write and delete will lock segment, read will not lock.
+
+- How redis handle query concurrency:
+  - It slice query into smaller block and share the same global lock.
+![](img/retro-4.png)
+
+- How redis can be used as a lock prevent race condition:
+  - Using SET NX: set nx return 1 if key is not exist and 0 if key existed.
+
+

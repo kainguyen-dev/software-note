@@ -684,3 +684,9 @@ pstmt.executeUpdate();
   - Cheapest one: all tenant in one DB, separate them by tenant_id
   - Medium cost: multiple schema for multiple tenant
   - Highest cost: one database for one tenant, some database can be shared by all client.
+
+**DIFFERENT TYPE OF PERFORMANCE TESTING**:
+  - Load test: define a specific load, and testing our system is behave normal under that load.
+  - Stress test: continuously increase the load and find the maximal throuput
+  - Soak test: define a specific load and let the system handle that load for a long period of time, the purpose of soak test is to detect memory leak
+  - Spike test
