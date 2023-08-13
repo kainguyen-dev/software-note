@@ -83,4 +83,7 @@ https://github.com/alex/what-happens-when
 - Server hello, send server certificate, cipher spec
 - Client verify domain name, CA, expire date
 - Session key
-- 
+
+
+**CSRF**
+- The main idea behind this attack is when request is sent, browser automatically send allong session cookie, attacker can use these mechanism to trick server think its request is from real user.

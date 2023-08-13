@@ -690,3 +690,53 @@ pstmt.executeUpdate();
   - Stress test: continuously increase the load and find the maximal throuput
   - Soak test: define a specific load and let the system handle that load for a long period of time, the purpose of soak test is to detect memory leak
   - Spike test
+
+# PROBABLISTIC DATA STRUCTURE
+
+## 1. Membership Query - Bloom filter
+- Bloom filter:
+  - Contain an array and a set of K hash function
+  - Step 1: hash the input, example 
+```
+Element: "apple"
+Hash Function 1: hash("apple") = 5
+Hash Function 2: hash("apple") = 8
+Hash Function 3: hash("apple") = 2
+```
+  - Step 2: set bit map 
+
+```
+Bloom Filter: [0, 0, 1, 0, 0, 1, 0, 1, 0, 0]
+```
+  
+- Bloom filter limitation:
+  - Can not remove
+  - Can have false positive
+
+## 2. Count-min sketch
+- Frequency - Count-Min Sketch:
+  - Use to count frequency of a data in data stream.
+
+```
++--------+--------+--------+--------+-
+|        |        |        |        |
+| Hash 1 | Hash 2 | Hash 3 | Hash 4 | 
+|        |        |        |        | 
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    | 
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    |
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    |
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    |
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    |
++--------+--------+--------+--------+
+|   0    |   0    |   0    |   0    |
++--------+--------+--------+--------+
+```
+
+
+## 3. Hyperloglog
+- HyperLogLog is a probabilistic data structure used for approximate cardinality estimation in large data sets with high accuracy and low memory usage. 

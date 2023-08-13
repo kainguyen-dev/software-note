@@ -962,3 +962,19 @@ alter table XYZ add index (col_1, col_2, col_3)
 - Data mismacth
 - LIMIT clause
 - Large portion of data is returned
+
+
+ public static <T> T min(Collection<? extends T> coll, Comparator<? super T> comp) {
+        if (comp==null)
+            return (T)min((Collection) coll);
+
+        Iterator<? extends T> i = coll.iterator();
+        T candidate = i.next();
+
+        while (i.hasNext()) {
+            T next = i.next();
+            if (comp.compare(next, candidate) < 0)
+                candidate = next;
+        }
+        return candidate;
+    }
