@@ -60,9 +60,9 @@
 
 ## 3. EC2: 
 - EC2 Instance type:
-    - General purpose
-    - RAM optimise: node in Spark
-    - Storage optimise: OTLP system
+    - General purpose (tag with A,T,M)
+    - RAM optimise: node in Spark (tag with R,X,z)
+    - Storage optimise: OTLP system (tag with H,I,D)
     - Compute optimise: use for batch process, video encoding, decoding ... 
 
 - Security Group (fire wall):
@@ -1123,3 +1123,348 @@ aws kinesis get-records --shard-iterator "AAAAAAAAAAEkHWfjF9hVCb80AhCkfpTg9JVstM
             ----> we can use cloud front distribution:
                 - No change in architect
                 - Will cache SW at edge
+    
+## 16. Database on AWS:
+- Choosing the right database:
+    - Read-heavy or write heavy
+    - Throught put ? 
+    - Scale and fluctuate
+
+
+- RDS:
+    - Manage open source database like PostGres, MySQL, Oracle, MariaDB, ...
+    - Auto-scaling for storage
+    - Support read replica and multi AZ
+    - Support auto back up available for 35 days
+    - Manual back up for longer storage
+- Aurora:
+    - Proprietary DB version of AWS, support MySQL and PostGres
+    - Data is automatically store in 6 replicas, HA, self-heal, auto-scale.
+    - Aurora special feature:
+        - Serverless: for unpredictable work load
+        - Global: 
+        - ML: intergrate with SageMaker
+        - Database cloning: no need to create snap shot
+- DynamoDB:
+    - Document DB, is a Proprietary noSQL of AWS.
+    - Can define capacity of on-demand mode
+    - Can be support by DAX cluster (for cache)
+    - Global table feature: active-active, meaning that user can write to any region
+    - Automated back up for 35 days or on-demand back up.
+- Timestream:
+    - Allow recent data be kept in cache
+
+
+## 17. Data & analytic:
+
+- Athena: 
+    - Serverless, service for scan and analyze s3 file
+    - Support format:
+        - Arvo
+        - Parquet
+        - Json
+        - CSV
+    - Athena is calculate by scan so parquet is recommend
+
+- Red shift:
+    - Red shift is based on PostGreSQL but not use for OLTP
+    - It's OLAP 
+    - It's columnar storage (not row based) & support parallel query
+
+- OpenSearch(= Elastic Search)
+    - In dynamoDB, we can only query by primary key or index field
+    - With OpenSearch, we can perform text search
+    - Two mode: managed cluster or serverless
+
+- EMR: Elastic MapReduce = Hadoop
+    - EMR handle provisioning of big data tool set like: Spark, Hbase, Presto, Flink
+
+- QuickSight: dashboard tool
+
+- Glue: 
+    - ETL service
+
+## 18. Machine learning:
+- Rekcognition:
+    - Using for content moderation
+    - Set a minimum value for image to get flag
+
+- Transcribe:
+    - Auto convert speech to text.
+    - 
+
+## 19. Cloudwatch:
+
+- Metric:
+    - Metric is just a variable to monitor like CPU & network
+    - Dimension is an attribute of metric like instance_id, environment, ...
+    - Max 30 dimension per metric
+    - Can create Cloudwatch dashboard
+    - Cloudwatch stream can send data to destination of choice like: data dog, Splunk, ... 
+
+- Logs:
+    - Cloud watch log insights
+    - Cloud log export to S3
+    - Cloud watch log aggregation multi-account & multi-region, and add filter for sensitive data.
+
+
+![Alt text](image-11.png)
+
+- Cloud watch should have EC2 enable Cloud watch log agent, to send log to Cloud watch.
+- Composite alarms combine of multiple single cloud watch arlam
+- Cloud trail, use for audit event from AWS
+
+
+## 20. IAM Advanced:
+
+- Organization:
+    - Global service:
+        - Allow to manage multiple accounts
+        - Shared reserved instance multiple accounts
+
+![Alt text](image-12.png)
+
+- Oraganiazation Unit:
+    - By department 
+    - By environment
+    - By project based
+
+- Advantage:
+    - Multi account vs one account multi VPC
+    - Use tagging standards for billing purpose
+
+- IAM Role vs Resource Based policies:
+    - When try to access some resources in AWS there are two approaches:
+        - IAM roles
+        - Resources-Based policies
+
+    - When you assume a role, you give up your original permission and take the permission assigned to the role.
+    - When you use a resources-based policy you keep your original permission.
+
+- Example: user in account A needs to scan a DynamoDB table in account A and dump it in a S3 in account.
+
+- Resource base policies: lambda, SNS, SQS, Cloudwatch Logs, API gateway.
+- Role base: ECS, EC2
+
+
+- IAM Permission boundaries:
+    - IAM permission boundaries are supported for users and roles (not groups)
+    - IAM boundaries allow us to filter out maximum permission an IAM entity can get:
+
+![Alt text](image-39.png)
+
+- AWS IAM Identity center (former AWS SSO)
+    - A single sign on for AWS account
+    - Business cloud application, (Sale forces, Box, 365)
+    - SAML 2.0
+
+![Alt text](image-41.png)
+
+
+- **Service control policies**:
+
+- Service control policies (SCPs) are a type of organization policy that you can use to manage permissions in your organization. SCPs offer central control over the maximum available permissions for all accounts in your organization
+
+- **AWS Discovery service**:
+
+- Directory service: directory service is an system to manage employee data and relationhips of user with digital assests of the company.
+
+![Alt text](image-42.png)
+
+- There are three type of AWS discovery service:
+    - AWS two way trust relationship: use both of on-premise and AWS managed AD
+    - AD Connector: AWS is just a proxy to route traffic to On-prem AD
+    - Simple AD: everything stay within AWS
+
+
+
+## 21. VPC (very important):
+
+**CIDR**:
+- Is a method for allocating IP, they help to identify IP address range:
+- For example
+    - XX.YY.ZZ.KK/32 -> One IP
+    - 0.0.0.0/0 -> All IP
+    - 192.168.0.0/24 ->  192.168.0.0 to 192.168.0.255 (64 IP address)
+    - 192.168.0.0/16 ->  192.168.0.0 to 192.168.255.255 (64 IP address)
+
+- CIDR comprise of:
+    - Base IP: XX.YY.ZZ.KK
+    - Subnet mask: defone how many ip in that range:
+        - /16: 65,536 IP
+        - /32: 1 IP
+        - /0: Allow all range 
+
+**Default VPC**:
+
+- All new AWS have a default VPC 
+- New EC2 instance are launched into default VPC if no subnet specified.
+- Default VPC have all internet connection.
+- Each subnet have their own CIDR
+
+**VPC**:
+- Max 5 VPC per region
+- Max number of CIDR block in VPC is 5:
+    - Min size = /28 (16 IP)
+    - Max size = /16 (65536 IP)
+- CIDR should NOT overlap with other networks
+
+- VPC setting note:
+    - CIDR range
+    - Tenancy: dedicated use dedicated hardware or shared hardware.
+
+**Sub net**:
+- AWS reserve 5 IP for its subnet configuration, they are:
+    - 10.0.0.0: Network address
+    - 10.0.0.1: Network router
+    - 10.0.0.2: for mapping to AWS-provided DNS
+    - 10.0.0.3: for future use of AWS
+    - 10.0.0.255: Network broad cast address
+
+**Intenet GW and route table**:
+
+- Internet GW:
+    - Create seperately with VPC
+    - One VPC can have one Internet GW
+
+- The public subnet itself does not accessible from internet, it need internet GW and route table.
+
+![Alt text](image-43.png)
+
+**Bastion Host**:
+
+- Bastion host is an instance in a public subnet that provide access from outside to private subnet.
+- Bastion host should allow access from port 22
+- EC2 in private subnet should allow access from EC2 bastion instance.
+
+![Alt text](image-44.png)
+
+**NAT Instance**:
+- Allow EC2 instance in internet to connection to internet.
+- NAT instance must be launched in public subnet.
+
+**NAT GW**:
+- AWS managed NAT, higher bandwidth, higher availability, no administration.
+- NAT GW can not be used by EC2 instance in the same subnet.
+- The flow is from:
+    - Private subnet -> NAT GW -> IGW
+- NAT GW is resilient with in single AZ
+
+![Alt text](image-45.png)
+
+**NACL and Security group**
+- NACL will attach to each subnet, request need to pass NACL before checking under security group.
+- The **Default NACL** will accept all inbound/outbound with the subnet.
+
+**Ephemeral port**
+- For any two endpoints to establish a connection they need to use port.
+- OS use a random port to send request to destination.
+
+![Alt text](image-46.png)
+
+**Security group vs NACLS**:
+- Instance level vs Subnet level
+- Support allow rule vs both allow and deny rule
+
+**VPC Peering**:
+
+- VPC can be privatelt connected.
+- They must not overlapping CIDR.
+- VPC peering is not transitive (hoán vị)
+- VPC peering can establish between VPC cross account.
+
+**VPC Endpoint**:
+
+- Instead of go throw NAT GW and Internet GW, we can call directly to VPC End point to external service.
+
+![Alt text](image-47.png)
+
+- Type of endpoint:
+    - Interface endpoint: provide an ENI as an entry point. 
+    - GW: provide a gateway for s3 and dynamoDB (free)
+
+**VPC Flow log**:
+- Allow us to capture IP going into interfaces.
+
+**Site to site VPN**:
+
+![Alt text](image-48.png)
+
+Cloud hub:
+
+![Alt text](image-49.png)
+
+**Direct connect**:
+- Provide a dedicate connection between on-premise DC to VPC
+- Access to public connection like s3 and EC2 in the same connection 
+- Use case:
+    - When we work with large dataset. Increase bandwidth throught put and lower cost.
+
+![Alt text](image-50.png)
+
+- If we need to set direct connect to one or more VPC in many different region. you must you Direct connect gateway bridge with AWS direct connection.
+
+- Direct connection type:
+    - Dedicated: physical connection host, higher bandwidth but more expesnsive
+    - Host connection: lower bandwidth but higher in 
+
+- Direct connect resilient:
+
+![Alt text](image-51.png)
+
+**NOTE: Site to site VPN can be use as back up for direct connection:**
+
+![Alt text](image-52.png)
+
+**Transit Gateway**:
+
+- When we have a lot more VPC that need to be connect, it's a lot harder to connect them all and the network topology is a mess. 
+- -> The solution is to use Transit Gateway to utilize hub and spoke (star) connection.
+
+![Alt text](image-54.png)
+
+- Support IP multi cast.
+- We can share direct connect to multiple account.
+
+![Alt text](image-55.png)
+
+**VPC Traffic mirroring**:
+
+- Allow to capture and inspect network traffic in VPC
+- Route the traffic to security appliance that you manage
+
+![Alt text](image-56.png)
+
+**IP v6**
+- IPv4 can not be disable
+- Ipv6 can be enable to use a dual stack.
+
+
+**Egress only internet gateway**:
+- Similar to NAT GW but for IPv6
+- Route table will have:
+    - 0.0.0.0/0 to NAT GW
+    - ::/0 to Egress internet gateway (IP v6)
+
+![Alt text](image-57.png)
+
+![Alt text](image-58.png)
+
+**VPC Summary**:
+- CIDR: A formula to caluate IP range
+- VPC: virtual private cloud
+- Subnet: tie to AZ, we can define multiple CIDR per subnet
+- Internet GW: tie to VPC, show resource to connect to internet
+- Route table: define destination in subnet given a CIDR
+- Bastion host: EC2 instance in public subnet that allow connect to private EC2
+- NAT instance: route request from private instacnce to internet GW (old), NAT instance must be in public subnet
+- NAT GW: newer version of NAT instance.
+- NACL: network ACL, at subnet level, stateless
+- Security group: at instance level
+- VPC Peering: connect two VPC together, given they don't have overlap CIDR.
+- VPC Endpoint: provide a way for private data access S3, SSM...
+- Site to site VPN, set up customer Gateway on DC and Virtual private gateway on VPC.
+- Direct connect: 
+- Transit GW: simplified VPC topology.
+- Traffic mirroring
+- Egress-only IG:
